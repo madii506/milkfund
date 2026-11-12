@@ -18,15 +18,15 @@
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png?v=1">
 <link rel="preload" href="/assets/fonts/idisp-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="/assets/js/main.js?v=5">
+<link rel="modulepreload" href="/assets/js/main.js?v=6">
 <link rel="modulepreload" href="/assets/js/vendor-motion.js?v=1">
 <link rel="modulepreload" href="/assets/js/core.js">
 <link rel="modulepreload" href="/assets/js/motion.js">
 <link rel="modulepreload" href="/assets/js/wallet.js">
-<link rel="modulepreload" href="/assets/js/home.js?v=5">
+<link rel="modulepreload" href="/assets/js/home.js?v=6">
 <link rel="modulepreload" href="/assets/js/drawer.js">
 <link rel="modulepreload" href="/assets/js/pc3d.js?v=2">
-<link rel="stylesheet" href="/assets/css/app.css?v=5">
+<link rel="stylesheet" href="/assets/css/app.css?v=6">
 </head>
 <body>
 
@@ -121,12 +121,57 @@
     </div>
   </section>
 
-  <!-- 02 stocks: cards or the market map -->
+  <!-- 02 why: a normal coin vs a MILK coin -->
+  <section id="why" class="sec">
+    <svg class="bgdrop bd1" viewBox="0 0 16 19" aria-hidden="true"><use href="#dropShape"/></svg>
+    <div class="wrap">
+      <header class="sec-head"><span class="eyebrow">02 · Why MILK</span><h2 class="h2 split">Same coin. Better ending.</h2><p class="sec-lead rv">On a normal pump.fun coin the creator fee goes to the dev and the holders keep the chart. On MILK, most of it comes back to the holders as a real stock.</p></header>
+      <div class="vs" id="vs">
+        <div class="vs-col vs-a"><div class="vs-h"><span class="vs-ic">?</span><span class="vs-t">A normal coin</span></div>
+          <ul>
+            <li><span>Creator fee</span><b>All to the dev</b></li>
+            <li><span>Holders get</span><b>The chart</b></li>
+            <li><span>Getting paid</span><b>Sell to someone else</b></li>
+            <li><span>Proof</span><b>Trust the dev</b></li>
+            <li><span>When the hype cools</span><b>Nothing left</b></li>
+          </ul></div>
+        <div class="vs-mid" aria-hidden="true"><span>vs</span></div>
+        <div class="vs-col vs-b"><div class="vs-h"><span class="vs-ic"><svg viewBox="0 0 16 19"><use href="#dropShape"/></svg></span><span class="vs-t">A MILK coin</span></div>
+          <ul>
+            <li><span>Creator fee</span><b>90% buys stock · 10% to you</b></li>
+            <li><span>Holders get</span><b>A real stock, in their wallet</b></li>
+            <li><span>Getting paid</span><b>Nothing to claim</b></li>
+            <li><span>Proof</span><b>Every payout on Solscan</b></li>
+            <li><span>When the hype cools</span><b>The stock stays</b></li>
+          </ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 stocks: cards or the market map -->
   <section id="stocks" class="sec sec-ink">
     <div class="wrap">
-      <header class="sec-head sec-row"><div><span class="eyebrow">02 · What it pays</span><h2 class="h2 split">Real stocks. Pre-IPO. Live.</h2><p class="sec-lead rv">Tokenized US stocks, ETFs and gold from xStocks, Backpack and Ondo, plus pre-IPO names like SpaceX, OpenAI and Anthropic. Live prices from Jupiter. Tap any card for its chart.</p></div>
+      <header class="sec-head sec-row"><div><span class="eyebrow">03 · What it pays</span><h2 class="h2 split">Real stocks. Pre-IPO. Live.</h2><p class="sec-lead rv">Tokenized US stocks, ETFs and gold from xStocks, Backpack and Ondo, plus pre-IPO names like SpaceX, OpenAI and Anthropic. Live prices from Jupiter. Tap any card for its chart.</p></div>
         <div class="seg" id="viewSeg" role="tablist"><button class="on" data-v="cards" type="button">Cards</button><button data-v="map" type="button">Map</button></div>
       </header>
+      <div class="spot rv" id="spot">
+        <div class="sp-main">
+          <div class="sp-head">
+            <span class="sp-logo"><img id="spLogo" alt="" width="54" height="54"></span>
+            <div class="sp-id"><b id="spTk">—</b><span id="spName">—</span></div>
+            <div class="seg sp-tf" id="spTf"><button class="on" data-tf="24h" type="button">24h</button><button data-tf="7d" type="button">7d</button></div>
+          </div>
+          <div class="sp-price"><b id="spPx">—</b><span class="chg fl" id="spChg">—</span></div>
+          <div class="sp-chart" id="spChart"><canvas id="spCv"></canvas><span class="sp-tip mono" id="spTip" hidden></span></div>
+          <p class="sp-note mono" id="spNote">&nbsp;</p>
+        </div>
+        <div class="sp-side">
+          <span class="sp-lbl mono">In the spotlight</span>
+          <div class="sp-pick" id="spPick" role="tablist" aria-label="Spotlight"></div>
+          <dl class="sp-stats" id="spStats"></dl>
+          <a class="btn btn-white btn-lg sp-go mag" id="spGo" href="/launch" data-link>Launch a coin that pays it <i class="arr">→</i></a>
+        </div>
+      </div>
       <div class="stools">
         <div class="chips" id="stockChips" role="tablist"><button class="chip on" data-k="top" type="button">Most traded</button><button class="chip" data-k="preipo" type="button">Pre-IPO</button><button class="chip" data-k="tech" type="button">Tech</button><button class="chip" data-k="crypto" type="button">Crypto</button><button class="chip" data-k="etf" type="button">Funds &amp; gold</button><button class="chip" data-k="up" type="button">Up today</button><button class="chip" data-k="down" type="button">Down today</button></div>
         <label class="sfind"><input id="stockQ" class="mono" placeholder="Search" autocomplete="off" spellcheck="false"></label>
@@ -139,8 +184,9 @@
 
   <!-- 03 the split + the math -->
   <section id="split" class="sec sec-blue">
+    <svg class="bgdrop bd2" viewBox="0 0 16 19" aria-hidden="true"><use href="#dropShape"/></svg>
     <div class="wrap">
-      <header class="sec-head"><span class="eyebrow">03 · The split</span><h2 class="h2 split">Every fee has a job.</h2><p class="sec-lead rv">pump.fun pays a creator fee on every trade. A MILK coin shares it on-chain from its first block: most of it buys the stock for holders, and the rest is fixed too.</p></header>
+      <header class="sec-head"><span class="eyebrow">04 · The split</span><h2 class="h2 split">Every fee has a job.</h2><p class="sec-lead rv">pump.fun pays a creator fee on every trade. A MILK coin shares it on-chain from its first block: most of it buys the stock for holders, and the rest is fixed too.</p></header>
       <div class="sm-in">
         <div class="sm-l">
           <div class="donut" id="donut"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="d-trk" cx="100" cy="100" r="80"/><g id="dSegs"></g></svg><div class="d-mid"><b id="dPct">100%</b><span id="dLbl">of every creator fee</span></div></div>
@@ -169,10 +215,12 @@
 
   <!-- 04 live: coins, payouts, engine, your bag -->
   <section id="live" class="sec sec-ink">
+    <svg class="bgdrop bd4" viewBox="0 0 16 19" aria-hidden="true"><use href="#dropShape"/></svg>
     <div class="wrap">
-      <header class="sec-head sec-row"><div><span class="eyebrow">04 · Live</span><h2 class="h2 split">The herd, live.</h2><p class="sec-lead rv">Every claim, swap and payout is a Solana transaction you can open. The engine runs every 5 minutes, and anyone can push a coin's fees out from its page.</p></div>
+      <header class="sec-head sec-row"><div><span class="eyebrow">05 · Live</span><h2 class="h2 split">The herd, live.</h2><p class="sec-lead rv">Every claim, swap and payout is a Solana transaction you can open. The engine runs every 5 minutes, and anyone can push a coin's fees out from its page.</p></div>
         <div class="seg" id="liveTabs" role="tablist"><button class="on" data-t="coins" type="button">Coins</button><button data-t="payouts" type="button">Payouts</button><button data-t="engine" type="button">Engine</button><button data-t="bag" type="button">Your bag</button></div>
       </header>
+      <ul class="status rv" id="status"><li><i></i>Launches</li><li><i></i>Fee split</li><li><i></i>Engine <em id="stTick">every 5 min</em></li><li><i></i>Jupiter swaps</li><li><i></i>Payouts</li><li class="wait" id="stMilk"><i></i>$MILK burn <em>starts at $MILK launch</em></li></ul>
       <div class="stats" id="stats"><div><b id="sCoins">—</b><span>coins</span></div><div><b id="sClaimed">—</b><span>SOL in fees</span></div><div><b id="sBought">—</b><span>SOL of stock bought</span></div><div><b id="sHolders">—</b><span>holders paid</span></div></div>
       <div class="lpane" id="lpCoins"><div class="cgrid" id="cgrid"></div></div>
       <div class="lpane" id="lpPayouts" hidden><div class="ltable" id="ltable"></div></div>
@@ -188,7 +236,7 @@
   <section id="milk" class="milkband">
     <div class="wrap milk-in">
       <div class="milk-l">
-        <span class="eyebrow">05 · $MILK</span>
+        <span class="eyebrow">06 · $MILK</span>
         <h2 class="h2 split">Every launch feeds $MILK.</h2>
         <p class="body">15% of every coin's fees buys $MILK on the open market and burns it. Every launch and every trade on MILK adds to it.</p>
         <ul class="mlist"><li>Bought with real trading fees</li><li>Burned on-chain, round after round</li><li>Grows with every coin launched on MILK</li></ul>
@@ -201,7 +249,8 @@
 
   <!-- 06 FAQ -->
   <section id="faq" class="sec sec-navy">
-    <div class="wrap faq-in"><header class="sec-head"><span class="eyebrow">06 · FAQ</span><h2 class="h2 split">Questions.</h2></header><div class="qa" id="qa"></div></div>
+    <svg class="bgdrop bd3" viewBox="0 0 16 19" aria-hidden="true"><use href="#dropShape"/></svg>
+    <div class="wrap faq-in"><header class="sec-head"><span class="eyebrow">07 · FAQ</span><h2 class="h2 split">Questions.</h2></header><div class="qa" id="qa"></div></div>
   </section>
 
   <!-- end -->
@@ -232,6 +281,6 @@
 <div class="modal" id="modal" aria-hidden="true"><div class="md-bg" data-close></div><div class="md-panel" role="dialog" aria-modal="true"><button class="md-x" type="button" data-close aria-label="Close">×</button><div class="md-body" id="mdBody"></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="dropShape" fill="currentColor" d="M7 0H9V1H10V3H11V5H12V6H13V8H14V10H15V15H14V17H13V18H11V19H5V18H3V17H2V15H1V10H2V8H3V6H4V5H5V3H6V1H7Z"/></defs></svg>
-<script type="module" src="/assets/js/main.js?v=5"></script>
+<script type="module" src="/assets/js/main.js?v=6"></script>
 </body>
 </html>

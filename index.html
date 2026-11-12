@@ -18,11 +18,17 @@
 <link rel="apple-touch-icon" href="/assets/img/favicon-180.png?v=1">
 <link rel="preload" href="/assets/fonts/idisp-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="modulepreload" href="/assets/js/main.js?v=5">
 <link rel="modulepreload" href="/assets/js/vendor-motion.js?v=1">
-<link rel="stylesheet" href="/assets/css/app.css?v=4">
+<link rel="modulepreload" href="/assets/js/core.js">
+<link rel="modulepreload" href="/assets/js/motion.js">
+<link rel="modulepreload" href="/assets/js/wallet.js">
+<link rel="modulepreload" href="/assets/js/home.js?v=5">
+<link rel="modulepreload" href="/assets/js/drawer.js">
+<link rel="modulepreload" href="/assets/js/pc3d.js?v=2">
+<link rel="stylesheet" href="/assets/css/app.css?v=5">
 </head>
-<body class="booting">
-<div id="intro" aria-hidden="true"><canvas id="introCv"></canvas><button class="skip mono" id="skipIntro" type="button">skip</button></div>
+<body>
 
 <header id="nav">
   <a class="brand" href="/" data-link aria-label="MILK home">
@@ -36,8 +42,13 @@
     <a class="nbtn nx" id="navX" href="#" target="_blank" rel="noopener" aria-label="MILK on X" hidden><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
     <button class="nbtn" id="walletBtn" type="button">Connect</button>
     <a class="btn btn-sm btn-white mag" href="/launch" data-link>Launch a coin</a>
+    <button class="nbtn nmenu" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mSheet"><i></i><i></i></button>
   </div>
 </header>
+<div class="msheet" id="mSheet" hidden>
+  <nav class="ms-links" aria-label="Sections"><a class="ml" href="/#how">How it works</a><a class="ml" href="/#stocks">Stocks</a><a class="ml" href="/#split">The split</a><a class="ml" href="/#live">Live</a><a class="ml" href="/#milk">$MILK</a><a class="ml" href="/#faq">FAQ</a></nav>
+  <div class="ms-cta"><a class="btn btn-white btn-lg" href="/launch" data-link>Launch a coin <i class="arr">→</i></a></div>
+</div>
 
 <main id="home">
   <!-- hero -->
@@ -46,7 +57,7 @@
     <div class="orbit" id="orbit" aria-hidden="true"></div>
     <div class="wrap hero-in">
       <p class="kicker mono rv"><span class="g">user@desk</span> <span class="b">milk</span> % <i class="cur"></i></p>
-      <h1 class="h-hero"><span class="ln">Every coin is</span> <span class="ln">a cash cow.</span></h1>
+      <h1 class="h-hero"><span class="ln"><span>Every coin is</span></span> <span class="ln"><span>a cash cow.</span></span></h1>
       <p class="lead rv">Launch a coin. Its fees buy real stocks for your holders.</p>
       <div class="ctas rv">
         <a class="btn btn-white btn-lg mag" href="/launch" data-link>Launch a coin <i class="arr">→</i></a>
@@ -65,12 +76,12 @@
   <section id="how" class="sec sec-navy">
     <div class="wrap how-in">
       <div class="how-l">
-        <header class="sec-head"><span class="eyebrow">01 · How it works</span><h2 class="h2 split">How a coin gets milked.</h2></header>
+        <header class="sec-head"><span class="eyebrow">01 · How it works</span><h2 class="h2 split">How a coin gets milked.</h2><p class="sec-lead rv">A MILK coin is a normal pump.fun coin with one difference: its creator fee is split on-chain the moment it launches, and the engine turns its share into a real stock for the holders.</p></header>
         <ol class="hsteps" id="hsteps">
-          <li class="on"><button type="button" data-i="0"><span class="n">1</span><span><b>Launch a coin</b><em>Name, picture, the stock it pays.</em></span><i class="bar"><i></i></i></button></li>
-          <li><button type="button" data-i="1"><span class="n">2</span><span><b>Trades pay fees</b><em>10% to you, 90% to the engine.</em></span><i class="bar"><i></i></i></button></li>
-          <li><button type="button" data-i="2"><span class="n">3</span><span><b>Fees buy the stock</b><em>Swapped on Jupiter, for real.</em></span><i class="bar"><i></i></i></button></li>
-          <li><button type="button" data-i="3"><span class="n">4</span><span><b>Holders get paid</b><em>Pro rata. Nothing to claim.</em></span><i class="bar"><i></i></i></button></li>
+          <li class="on"><button type="button" data-i="0"><span class="n">1</span><span><b>Launch a coin</b><em>Pick a name, a picture and the stock it pays. One signature launches it on pump.fun.</em></span><i class="bar"><i></i></i></button></li>
+          <li><button type="button" data-i="1"><span class="n">2</span><span><b>Trades pay fees</b><em>Every buy and sell pays a creator fee. 10% is yours, 90% goes to the MILK engine.</em></span><i class="bar"><i></i></i></button></li>
+          <li><button type="button" data-i="2"><span class="n">3</span><span><b>Fees buy the stock</b><em>When a coin's pot reaches 0.1 SOL, the engine swaps it on Jupiter for the real stock.</em></span><i class="bar"><i></i></i></button></li>
+          <li><button type="button" data-i="3"><span class="n">4</span><span><b>Holders get paid</b><em>The stock goes straight to every wallet with 0.05% or more, pro rata. Nothing to claim.</em></span><i class="bar"><i></i></i></button></li>
         </ol>
       </div>
       <div class="how-r">
@@ -100,12 +111,20 @@
         </div>
       </div>
     </div>
+    <div class="wrap">
+      <div class="feats">
+        <div class="ft rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4" y="10" width="16" height="11" rx="3" fill="currentColor"/></svg></span><b>Split locked on-chain</b><p>Set in pump.fun's fee sharing at launch. The admin is revoked in the same transaction, so nobody can change it, us included.</p></div>
+        <div class="ft rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7h6v6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Real stocks, not points</b><p>Fees are swapped on Jupiter into tokenized stocks from xStocks, Backpack, Ondo, PreStocks and Tessera.</p></div>
+        <div class="ft rv"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16 13h2" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><path d="M6 6l9-3 1.5 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span><b>Nothing to claim</b><p>Hold 0.05% of the supply or more and the stock lands in your wallet every round, pro rata to your bag.</p></div>
+        <div class="ft rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="4.5" cy="6" r="1.7" fill="currentColor"/><circle cx="4.5" cy="12" r="1.7" fill="currentColor"/><circle cx="4.5" cy="18" r="1.7" fill="currentColor"/></svg></span><b>Every move on the ledger</b><p>Each claim, swap and payout links to its Solana transaction. The engine has no other way to spend.</p></div>
+      </div>
+    </div>
   </section>
 
   <!-- 02 stocks: cards or the market map -->
   <section id="stocks" class="sec sec-ink">
     <div class="wrap">
-      <header class="sec-head sec-row"><div><span class="eyebrow">02 · What it pays</span><h2 class="h2 split">Real stocks. Pre-IPO. Live.</h2></div>
+      <header class="sec-head sec-row"><div><span class="eyebrow">02 · What it pays</span><h2 class="h2 split">Real stocks. Pre-IPO. Live.</h2><p class="sec-lead rv">Tokenized US stocks, ETFs and gold from xStocks, Backpack and Ondo, plus pre-IPO names like SpaceX, OpenAI and Anthropic. Live prices from Jupiter. Tap any card for its chart.</p></div>
         <div class="seg" id="viewSeg" role="tablist"><button class="on" data-v="cards" type="button">Cards</button><button data-v="map" type="button">Map</button></div>
       </header>
       <div class="stools">
@@ -121,7 +140,7 @@
   <!-- 03 the split + the math -->
   <section id="split" class="sec sec-blue">
     <div class="wrap">
-      <header class="sec-head"><span class="eyebrow">03 · The split</span><h2 class="h2 split">Every fee has a job.</h2></header>
+      <header class="sec-head"><span class="eyebrow">03 · The split</span><h2 class="h2 split">Every fee has a job.</h2><p class="sec-lead rv">pump.fun pays a creator fee on every trade. A MILK coin shares it on-chain from its first block: most of it buys the stock for holders, and the rest is fixed too.</p></header>
       <div class="sm-in">
         <div class="sm-l">
           <div class="donut" id="donut"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="d-trk" cx="100" cy="100" r="80"/><g id="dSegs"></g></svg><div class="d-mid"><b id="dPct">100%</b><span id="dLbl">of every creator fee</span></div></div>
@@ -151,7 +170,7 @@
   <!-- 04 live: coins, payouts, engine, your bag -->
   <section id="live" class="sec sec-ink">
     <div class="wrap">
-      <header class="sec-head sec-row"><div><span class="eyebrow">04 · Live</span><h2 class="h2 split">The herd, live.</h2></div>
+      <header class="sec-head sec-row"><div><span class="eyebrow">04 · Live</span><h2 class="h2 split">The herd, live.</h2><p class="sec-lead rv">Every claim, swap and payout is a Solana transaction you can open. The engine runs every 5 minutes, and anyone can push a coin's fees out from its page.</p></div>
         <div class="seg" id="liveTabs" role="tablist"><button class="on" data-t="coins" type="button">Coins</button><button data-t="payouts" type="button">Payouts</button><button data-t="engine" type="button">Engine</button><button data-t="bag" type="button">Your bag</button></div>
       </header>
       <div class="stats" id="stats"><div><b id="sCoins">—</b><span>coins</span></div><div><b id="sClaimed">—</b><span>SOL in fees</span></div><div><b id="sBought">—</b><span>SOL of stock bought</span></div><div><b id="sHolders">—</b><span>holders paid</span></div></div>
@@ -171,7 +190,8 @@
       <div class="milk-l">
         <span class="eyebrow">05 · $MILK</span>
         <h2 class="h2 split">Every launch feeds $MILK.</h2>
-        <p class="body">15% of every coin's fees buys $MILK and burns it.</p>
+        <p class="body">15% of every coin's fees buys $MILK on the open market and burns it. Every launch and every trade on MILK adds to it.</p>
+        <ul class="mlist"><li>Bought with real trading fees</li><li>Burned on-chain, round after round</li><li>Grows with every coin launched on MILK</li></ul>
         <div class="ca" id="ca" hidden><span class="mono" id="caTxt"></span><button class="btn btn-sm btn-ink" id="caCopy" type="button">Copy</button></div>
         <div class="mstats"><div><b id="mAside">—</b><span>SOL for $MILK</span></div><div><b id="mBurn">—</b><span>$MILK burned</span></div></div>
       </div>
@@ -188,6 +208,7 @@
   <section id="end" class="end">
     <div class="wrap end-in">
       <h2 class="mega" aria-label="milk"><span>m</span><span>i</span><span>l</span><span>k</span></h2>
+      <p class="lead">Launch a coin. Its fees buy real stocks for your holders, forever.</p>
       <div class="ctas"><a class="btn btn-white btn-lg mag" href="/launch" data-link>Launch a coin <i class="arr">→</i></a><a class="btn btn-ghost btn-lg" href="/#stocks" data-sec>Browse stocks</a></div>
     </div>
   </section>
@@ -211,6 +232,6 @@
 <div class="modal" id="modal" aria-hidden="true"><div class="md-bg" data-close></div><div class="md-panel" role="dialog" aria-modal="true"><button class="md-x" type="button" data-close aria-label="Close">×</button><div class="md-body" id="mdBody"></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="dropShape" fill="currentColor" d="M7 0H9V1H10V3H11V5H12V6H13V8H14V10H15V15H14V17H13V18H11V19H5V18H3V17H2V15H1V10H2V8H3V6H4V5H5V3H6V1H7Z"/></defs></svg>
-<script type="module" src="/assets/js/main.js?v=4"></script>
+<script type="module" src="/assets/js/main.js?v=5"></script>
 </body>
 </html>

@@ -314,7 +314,7 @@ function drawMap(animate) {
   const items = mapList().map(s => ({ s, v: Math.sqrt(s.liq) }));
   const rects = squarify(items, 0, 0, W, H);
   box.innerHTML = rects.map(r => {
-    const s = r.s, fs = Math.max(12, Math.min(30, r.w / 6.2, r.h / 3.2)), fits = r.h > 54 && (s.ticker.length * fs * .64 + 40) < r.w, xs = r.w < 46 || r.h < 40;
+    const s = r.s, fs = Math.max(12, Math.min(30, r.w / 6.2, r.h / 3.2)), fits = r.h > 54 && (s.ticker.length * fs * .62 + 60) < r.w, xs = r.w < 46 || r.h < 40;
     return `<div class="mt${fits ? '' : ' s'}${xs ? ' xs' : ''}${s.kind === 'preipo' ? ' pre' : ''}" data-id="${esc(s.id)}" title="${esc(s.ticker)} · ${esc(s.name)} · ${pct(s.chg24)}" style="--fs:${fs.toFixed(1)}px;left:${(r.x + G / 2).toFixed(1)}px;top:${(r.y + G / 2).toFixed(1)}px;width:${Math.max(0, r.w - G).toFixed(1)}px;height:${Math.max(0, r.h - G).toFixed(1)}px;background:${heat(s.chg24)}">
       <div class="tp">${s.icon ? `<img src="${logo(s.mint)}" alt="" loading="lazy">` : ''}<b>${esc(s.ticker)}</b></div><span class="p">${pct(s.chg24)}</span></div>`;
   }).join('');

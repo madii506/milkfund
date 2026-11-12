@@ -1,7 +1,7 @@
 // the home page: hero (live 3D computer, real company logos, live tape), how it works (the phone plays it),
 // stocks (cards or the market map), the split + the math, live (coins, payouts, engine, your bag), $MILK, FAQ, end.
 import { $, $$, esc, api, logo, usd, pct, chgClass, sol, num, ago, short, solscan, stocks, config, on, reduced, toast, copy } from './core.js';
-import { gsap, ScrollTrigger, lenis, revealAll, countTo, magnetic, splitWords } from './motion.js';
+import { gsap, ScrollTrigger, lenis, revealAll, countTo, magnetic } from './motion.js';
 import { openStock } from './drawer.js';
 
 const RM = reduced();
@@ -20,7 +20,7 @@ function hero() {
   ScrollTrigger.create({ trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true, onUpdate: s => PC && PC.setScroll(s.progress * .6) });
   if (!RM) gsap.to('.hero-in', { yPercent: -12, opacity: .3, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
 }
-// the 3D computer loads once the intro is over, so the intro never stutters; it fades in when ready
+// the 3D computer: the hero text is already on screen (pure CSS); the computer fades in as soon as it is ready
 let PC_STARTED = false;
 async function startPC() {
   if (PC_STARTED) return; PC_STARTED = true;
@@ -35,21 +35,6 @@ async function startPC() {
   } catch (e) { cv.replaceWith(Object.assign(document.createElement('img'), { src: '/assets/img/pfp.webp', className: 'pc-fallback', alt: '' })); PC = null; }
 }
 
-// the hero comes in once the intro has flooded the screen blue
-let HERO_ON = false;
-export function heroIn() {
-  if (HERO_ON) return; HERO_ON = true;
-  const words = splitWords($('.h-hero'));
-  startPC();
-  if (RM) { gsap.set(['#nav', '.hero .rv', '.tape'], { opacity: 1 }); gsap.set(words, { yPercent: 0 }); orbitIn(); return; }
-  const tl = gsap.timeline();
-  tl.fromTo('#nav', { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: .8, ease: 'power3.out', clearProps: 'transform' }, .1)
-    .fromTo(words, { yPercent: 115, rotate: 4 }, { yPercent: 0, rotate: 0, duration: 1.1, ease: 'expo.out', stagger: .06 }, .1)
-    .fromTo('.hero .rv', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .9, ease: 'power3.out', stagger: .08 }, .35)
-    .fromTo('.tape', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .9, ease: 'power3.out' }, .5)
-    .add(orbitIn, .3);
-}
-export function heroHide() { gsap.set(['#nav', '.hero .rv', '.tape', '#pc'], { opacity: 0 }); gsap.set(splitWords($('.h-hero')), { yPercent: 115 }); }
 
 // real company logos floating around the computer
 const ORB = [];
@@ -391,9 +376,12 @@ const QA = [
   ['Where does the money come from?', 'pump.fun\'s creator fee on every trade. MILK coins share it on-chain: 10% to the creator, 90% to the engine.'],
   ['Can the split change?', 'No. It is set in pump.fun\'s fee sharing at launch and the admin is revoked in the same transaction.'],
   ['Who gets paid?', 'Holders with at least 0.05% of the supply, pro rata, each time a coin\'s pot reaches 0.1 SOL. Nothing to claim.'],
-  ['Which stocks?', '137 tokenized stocks, funds and pre-IPO names on Solana, from xStocks, Backpack, PreStocks, Tessera and Ondo.'],
+  ['Which stocks?', 'Tokenized stocks, funds and pre-IPO names on Solana, from xStocks, Backpack, PreStocks, Tessera and Ondo, all priced live.'],
   ['What is $MILK?', '15% of every coin\'s fees buys $MILK and burns it.'],
   ['Who holds the keys?', 'You sign your launch with your own wallet. The engine only spends fees by the rules above, and every transaction is on the ledger.'],
+  ['What does a launch cost?', 'About 0.02 SOL in network costs, shown exactly before you sign. MILK charges nothing to launch.'],
+  ['Do holders need to do anything?', 'No. Hold at least 0.05% of the supply and the stock is sent to your wallet when the coin\'s round pays out.'],
+  ['Which wallets work?', 'Any Solana wallet that supports Wallet Standard, like Phantom, Solflare or Backpack. Your wallet signs; MILK never sees your key.'],
   ['Any limits?', 'Issuers set their own rules (xStocks are not offered to US persons) and pre-IPO tokens carry a 1% transfer fee. Not financial advice.'],
 ];
 function faq() {
@@ -417,14 +405,13 @@ function navWatch() {
   const setOn = a => links.forEach(l => l.classList.toggle('on', l === a));
   ['#how', '#stocks', '#split', '#live', '#milk', '#faq'].forEach(id => ScrollTrigger.create({ trigger: id, start: 'top 55%', end: 'bottom 55%', onToggle: s => { if (s.isActive) setOn(links.find(l => l.getAttribute('href') === '/' + id)); } }));
   ScrollTrigger.create({ trigger: '#hero', start: 'top top', end: 'bottom 55%', onToggle: s => { if (s.isActive) setOn(null); } });
-  ScrollTrigger.create({ trigger: '#milk', start: 'top 40px', end: 'bottom 40px', onToggle: s => nav.classList.toggle('on-light', s.isActive) });
   let last = 0;
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => { const y = s.scroll(); nav.classList.toggle('scrolled', y > 40); if (Math.abs(y - last) > 6) { nav.classList.toggle('hide', y > last && y > innerHeight * .6); last = y; } } });
 }
 
 export async function home() {
   const listP = stocks().catch(() => []);
-  hero();
+  hero(); startPC(); orbitIn();
   how(); stocksSec(); split(); faq(); megaIn();
   revealAll($('#home'));
   magnetic();
@@ -432,7 +419,7 @@ export async function home() {
   live(); milkBand(); surprise(listP);
   listP.then(async list => {
     LIST = list;
-    $('#nStocks').textContent = list.length || '137';
+    $('#nStocks').textContent = uniqTickers(list).length || '—';
     if (PC && PC.setStocks) PC.setStocks(featured(list).slice(0, 14).map(s => s.ticker));
     orbit(list); tape(list); drawStocks(true); await calc(list).catch(() => {});
     ScrollTrigger.refresh();

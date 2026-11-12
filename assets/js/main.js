@@ -1,49 +1,24 @@
-// MILK: the router (/, /launch, /coin/<mint>, /coins), the nav (wallet, X), smooth scroll and the intro
-import { $, on, short, toast, copy, config, logo, solscan, reduced } from './core.js';
+// MILK: the router (/, /launch, /coin/<mint>, /coins), the nav (wallet, X, the phone menu) and smooth scroll
+import { $, on, short, toast, copy, config, solscan, reduced } from './core.js';
 import { smooth, scrollTo, ScrollTrigger, gsap } from './motion.js';
-import { playIntro } from './intro.js?v=4';
 import * as W from './wallet.js';
 
 const homeEl = $('#home'), appEl = $('#app'), nav = $('#nav');
-let homeReady = null, H = null, homeLoaded = false, introOver = false, heroShown = false;
-
-// ---------------------------------------------------------------- the intro: a milk drop, a ring of real logos, a blue flood
-// (home page only, once per visit, ~3.5 s; a click, a key or the wheel skips it)
-const INTRO_MINTS = ['Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh', 'XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB', 'XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp', 'PreANxuXjsy2pvisWWMNB6YaJNzr7681wJJr2rHsfTh',
-  'XspzcW1PRtgf6Wj92HCiZdjzKCyFekVD8P5Ueh3dRMX', 'Xs3eBt7uRfJX8QUs4suhyU8p2M6DoUDrJyWBa8LLZsg', 'Pren1FvFX6J3E4kXhJuCiAD5aDmGEb7qJRncwA8Lkhw', 'Xsa62P5mvPszXL1krVUnU5ar38bBSVcWAB6fmPCo5Zu',
-  'XsCPL9dNWBMvFtTmwcCA5v3xWPSMEBCszbQdiLLq6aN', 'PreweJYECqtQwBtpxHL171nL2K6umo692gTm7Q3rpgF', 'Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu', 'XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4'];
-function intro() {
-  const p = location.pathname.replace(/\/+$/, '') || '/', q = location.search;
-  let seen = false; try { seen = sessionStorage.getItem('milk:intro') === '1'; sessionStorage.setItem('milk:intro', '1'); } catch {}
-  if ((p !== '/' && p !== '/coins') || location.hash || reduced() || (/[?&](shot|nointro)\b/.test(q) && !/[?&]intro\b/.test(q))) return endIntro();
-  const ctl = playIntro({ canvas: $('#introCv'), logos: INTRO_MINTS.map(logo), quick: seen, onDone: endIntro });
-  const skip = () => { if (!introOver) ctl.skip(); };
-  $('#intro').addEventListener('click', skip);
-  addEventListener('keydown', e => { if (/^(Escape| |Enter|ArrowDown|PageDown)$/.test(e.key)) skip(); });
-  addEventListener('wheel', skip, { passive: true });
-  addEventListener('touchmove', skip, { passive: true });
-}
-function endIntro() {
-  if (introOver) return; introOver = true;
-  $('#intro').classList.add('gone'); document.body.classList.remove('booting');
-  showHero();
-}
-function showHero() { if (heroShown || !homeLoaded || !introOver) return; heroShown = true; H.heroIn(); }
+let homeReady = null;
 
 // ---------------------------------------------------------------- routes
 async function route(push) {
   const p = location.pathname.replace(/\/+$/, '') || '/';
   const m = p.match(/^\/coin\/([1-9A-HJ-NP-Za-km-z]{32,44})$/);
-  closeMenu();
+  closeMenu(); setSheet(false);
   if (p === '/launch' || m) {
     homeEl.hidden = true; appEl.hidden = false;
     nav.classList.remove('on-light', 'hide'); nav.classList.add('on-app');
     ScrollTrigger.getAll().forEach(t => t.disable(false));
-    endIntro(); gsap.set('#nav', { opacity: 1, clearProps: 'transform' });
     scrollTo(0, { immediate: true });
     appEl.innerHTML = '';
-    if (m) (await import('./coin.js?v=4')).coin(appEl, m[1]);
-    else (await import('./launch.js?v=4')).launch(appEl);
+    if (m) (await import('./coin.js?v=5')).coin(appEl, m[1]);
+    else (await import('./launch.js?v=5')).launch(appEl);
     document.title = 'MILK';
     return;
   }
@@ -57,11 +32,8 @@ async function route(push) {
   if (sec && $(sec)) setTimeout(() => scrollTo(sec, { immediate: !push, offset: -10 }), push ? 50 : 300);
 }
 async function startHome() {
-  H = await import('./home.js?v=4');
-  if (!heroShown) H.heroHide();
+  const H = await import('./home.js?v=5');
   await H.home();
-  homeLoaded = true;
-  showHero();
 }
 
 // links: same-page sections scroll smoothly; app links route without a reload
@@ -91,7 +63,7 @@ on('balance', paintWallet);
 window.__milkWallet = () => W.current();
 wb.addEventListener('click', async e => {
   e.stopPropagation();
-  if (!W.current()) { try { await (await import('./launch.js?v=4')).pickWallet(); } catch {} return; }
+  if (!W.current()) { try { await (await import('./launch.js?v=5')).pickWallet(); } catch {} return; }
   if (MENU) closeMenu(); else openMenu();
 });
 let MENU = null;
@@ -112,7 +84,7 @@ function openMenu() {
       if (homeEl.hidden) { history.pushState(null, '', '/#live'); await route(true); }
       window.__milkBag && window.__milkBag(); scrollTo('#live', { offset: -10 });
     }
-    closeMenu();
+    closeMenu(); setSheet(false);
   });
 }
 function closeMenu() { if (MENU) { MENU.remove(); MENU = null; } }
@@ -120,7 +92,18 @@ document.addEventListener('click', e => { if (MENU && !MENU.contains(e.target) &
 addEventListener('resize', closeMenu);
 addEventListener('scroll', () => MENU && closeMenu(), { passive: true });
 
-intro();
+// ---------------------------------------------------------------- the phone menu
+const mb = $('#menuBtn'), ms = $('#mSheet');
+function setSheet(open) {
+  if (!ms || ms.hidden === !open) return;
+  ms.hidden = !open; mb.setAttribute('aria-expanded', String(open)); document.documentElement.classList.toggle('menu-open', open);
+  if (window.__lenis) open ? __lenis.stop() : __lenis.start();
+  if (open && !reduced()) gsap.fromTo(ms.querySelectorAll('.ml, .ms-cta'), { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: .55, ease: 'expo.out', stagger: .04 });
+}
+mb.addEventListener('click', () => setSheet(ms.hidden));
+ms.addEventListener('click', e => { if (e.target.closest('a')) setSheet(false); });
+addEventListener('keydown', e => { if (e.key === 'Escape') setSheet(false); });
+
 smooth();
 W.resume().catch(() => {});
 paintWallet();

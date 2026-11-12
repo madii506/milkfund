@@ -63,7 +63,7 @@ async function holders(c) {
 
 async function push(c) {
   let w = W.current();
-  if (!w) { try { w = await (await import('./launch.js?v=4')).pickWallet(); } catch { return; } }
+  if (!w) { try { w = await (await import('./launch.js?v=5')).pickWallet(); } catch { return; } }
   const b = $('#push'); b.disabled = true; b.textContent = 'Building…';
   try {
     const p = await api.post('payout', { payer: w.address, coin: c.coin });

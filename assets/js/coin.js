@@ -6,15 +6,15 @@ import { openStock } from './drawer.js';
 import * as W from './wallet.js';
 
 export async function coin(root, mint) {
-  root.innerHTML = `<div class="wrap"><a class="back" href="/#coins" data-link>← All coins</a><div class="panel"><p class="muted">Loading the coin…</p></div></div>`;
-  let r; try { r = await api.get('coin', { mint }); } catch (e) { root.innerHTML = `<div class="wrap"><a class="back" href="/#coins" data-link>← All coins</a><div class="panel"><h2>Not a MILK coin</h2><p class="sub">${esc(e.message)}</p><a class="btn btn-blue" href="/launch" data-link>Launch one <i class="arr">→</i></a></div></div>`; return; }
+  root.innerHTML = `<div class="wrap"><a class="back" href="/#live" data-link>← All coins</a><div class="panel"><p class="muted">Loading the coin…</p></div></div>`;
+  let r; try { r = await api.get('coin', { mint }); } catch (e) { root.innerHTML = `<div class="wrap"><a class="back" href="/#live" data-link>← All coins</a><div class="panel"><h2>Not a MILK coin</h2><p class="sub">${esc(e.message)}</p><a class="btn btn-blue" href="/launch" data-link>Launch one <i class="arr">→</i></a></div></div>`; return; }
   const list = await stocks().catch(() => []);
   const c = r.coin, s = list.find(x => x.id === c.stock.id) || null, cv = c.curve, mcap = cv && r.usd ? cv.mcap * r.usd : null;
   document.title = '$' + c.symbol + ' · MILK';
   const sh = (r.split && r.split.shareholders) || [];
   const label = a => a === c.creator ? 'creator' : a === r.engine ? 'MILK engine' : short(a);
   root.innerHTML = `<div class="wrap">
-    <a class="back" href="/#coins" data-link>← All coins</a>
+    <a class="back" href="/#live" data-link>← All coins</a>
     <header class="coin-head"><img src="${c.image}" alt="">
       <div><h1>${esc(c.name)}</h1><div class="sym">$${esc(c.symbol)} <button class="btn btn-sm btn-line" style="color:var(--ink)" id="cpy" type="button">${short(c.coin)} · copy</button></div></div>
       <div class="acts"><a class="btn btn-blue mag" href="https://pump.fun/coin/${c.coin}" target="_blank" rel="noopener">Trade on pump.fun <i class="arr">↗</i></a><a class="btn btn-line" style="color:var(--ink)" href="https://dexscreener.com/solana/${c.coin}" target="_blank" rel="noopener">Chart</a></div>
@@ -63,7 +63,7 @@ async function holders(c) {
 
 async function push(c) {
   let w = W.current();
-  if (!w) { try { w = await (await import('./launch.js?v=1')).pickWallet(); } catch { return; } }
+  if (!w) { try { w = await (await import('./launch.js?v=4')).pickWallet(); } catch { return; } }
   const b = $('#push'); b.disabled = true; b.textContent = 'Building…';
   try {
     const p = await api.post('payout', { payer: w.address, coin: c.coin });

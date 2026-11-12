@@ -32,7 +32,7 @@ async function route(push) {
   if (sec && $(sec)) setTimeout(() => scrollTo(sec, { immediate: !push, offset: -10 }), push ? 50 : 300);
 }
 async function startHome() {
-  const H = await import('./home.js?v=6');
+  const H = await import('./home.js?v=7');
   await H.home();
 }
 

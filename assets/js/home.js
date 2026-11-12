@@ -225,9 +225,9 @@ const SPOT = (() => {
     g.fillStyle = 'rgba(255,255,255,.07)'; for (let i = 1; i < 4; i++) g.fillRect(0, Math.round(H * i / 4), W, Math.max(1, DPR));
     if (!pts) return;
     const { X, Y } = geo(), n = Math.max(2, Math.round(pts.length * wipe));
-    g.beginPath(); for (let i = 0; i < n; i++) i ? g.lineTo(X(i), Y(pts[i][1])) : g.moveTo(X(i), Y(pts[i][1]));
-    g.lineTo(X(n - 1), H); g.lineTo(X(0), H); g.closePath(); g.fillStyle = 'rgba(255,255,255,.1)'; g.fill();
-    g.beginPath(); for (let i = 0; i < n; i++) i ? g.lineTo(X(i), Y(pts[i][1])) : g.moveTo(X(i), Y(pts[i][1]));
+    const line = () => { g.moveTo(X(0), Y(pts[0][1])); for (let i = 1; i < n - 1; i++) g.quadraticCurveTo(X(i), Y(pts[i][1]), (X(i) + X(i + 1)) / 2, (Y(pts[i][1]) + Y(pts[i + 1][1])) / 2); g.lineTo(X(n - 1), Y(pts[n - 1][1])); };
+    g.beginPath(); line(); g.lineTo(X(n - 1), H); g.lineTo(X(0), H); g.closePath(); g.fillStyle = 'rgba(255,255,255,.1)'; g.fill();
+    g.beginPath(); line();
     g.strokeStyle = '#fff'; g.lineWidth = 3 * DPR; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke();
     const k = hover >= 0 && wipe >= 1 ? hover : n - 1, x = X(k), y = Y(pts[k][1]);
     if (hover >= 0) { g.fillStyle = 'rgba(255,255,255,.35)'; g.fillRect(Math.round(x), 0, Math.max(1, DPR), H); }
@@ -246,9 +246,11 @@ const SPOT = (() => {
     if (!cache.has(key)) cache.set(key, api.get('chart', { m: s.mint, tf }).then(r => r.pts).catch(() => null));
     const p = await cache.get(key); if (cur !== s) return;
     pts = p && p.length > 2 ? p : null; hover = -1;
-    if (!pts) { draw(); note.textContent = 'No chart yet: too few trades on-chain.'; return; }
-    const ch = (pts[pts.length - 1][1] / pts[0][1] - 1) * 100;
-    note.textContent = `${tf}: ${usd(Math.min(...pts.map(q => q[1])))} to ${usd(Math.max(...pts.map(q => q[1])))} · ${pct(ch)} · GeckoTerminal`;
+    if (!pts) { draw(); note.textContent = 'No chart yet: too few trades on-chain.'; $('#spRange').hidden = true; return; }
+    const ch = (pts[pts.length - 1][1] / pts[0][1] - 1) * 100, ys = pts.map(q => q[1]), lo = Math.min(...ys), hi = Math.max(...ys), last = ys[ys.length - 1];
+    note.textContent = `${tf} change ${pct(ch)} · prices from GeckoTerminal`;
+    $('#srLbl').textContent = tf + ' range'; $('#srLo').textContent = usd(lo); $('#srHi').textContent = usd(hi);
+    $('#srDot').style.left = (hi > lo ? (last - lo) / (hi - lo) * 100 : 50).toFixed(1) + '%'; $('#spRange').hidden = false;
     if (RM) { wipe = 1; draw(); return; }
     const o = { k: 0 }; gsap.to(o, { k: 1, duration: .9, ease: 'power2.out', onUpdate: () => { wipe = o.k; draw(); } });
   }
@@ -492,9 +494,6 @@ const QA = [
   ['What is $MILK?', '15% of every coin\'s fees buys $MILK and burns it.'],
   ['Who holds the keys?', 'You sign your launch with your own wallet. The engine only spends fees by the rules above, and every transaction is on the ledger.'],
   ['What does a launch cost?', 'About 0.02 SOL in network costs, shown exactly before you sign. MILK charges nothing to launch.'],
-  ['Do holders need to do anything?', 'No. Hold at least 0.05% of the supply and the stock is sent to your wallet when the coin\'s round pays out.'],
-  ['Which wallets work?', 'Any Solana wallet that supports Wallet Standard, like Phantom, Solflare or Backpack. Your wallet signs; MILK never sees your key.'],
-  ['Any limits?', 'Issuers set their own rules (xStocks are not offered to US persons) and pre-IPO tokens carry a 1% transfer fee. Not financial advice.'],
 ];
 function faq() {
   const box = $('#qa');

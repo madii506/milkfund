@@ -1,0 +1,14 @@
+{
+  "name": "milkfund",
+  "private": true,
+  "description": "MILK: every coin is a cash cow. Launch a coin on pump.fun and its fees buy real stocks for its holders.",
+  "engines": { "node": "22.x" },
+  "dependencies": {
+    "@neondatabase/serverless": "1.2.0",
+    "@pump-fun/pump-sdk": "4.3.1",
+    "@solana/spl-token": "0.4.14",
+    "@solana/web3.js": "1.98.4",
+    "bn.js": "5.2.2"
+  },
+  "overrides": { "uuid": "^9.0.1", "rpc-websockets": "9.3.3" }
+}

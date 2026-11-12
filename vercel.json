@@ -1,0 +1,21 @@
+{
+  "cleanUrls": true,
+  "regions": ["iad1"],
+  "functions": { "api/milk.js": { "maxDuration": 300, "memory": 1024 } },
+  "rewrites": [
+    { "source": "/api/:op(health|config|stats|stocks|logo|chart|sol|coins|coin|events|holders|engine|balance|bag|tick|prepare|send|status|confirm|buy|payout|claimed)", "destination": "/api/milk?op=:op" },
+    { "source": "/m/:id", "destination": "/api/milk?op=meta&id=:id" },
+    { "source": "/i/:id", "destination": "/api/milk?op=image&id=:id" },
+    { "source": "/coin/:id", "destination": "/" },
+    { "source": "/launch", "destination": "/" },
+    { "source": "/coins", "destination": "/" }
+  ],
+  "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" },
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+    ] },
+    { "source": "/assets/(.*)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" } ] }
+  ]
+}

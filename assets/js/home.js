@@ -248,7 +248,7 @@ const SPOT = (() => {
     pts = p && p.length > 2 ? p : null; hover = -1;
     if (!pts) { draw(); note.textContent = 'No chart yet: too few trades on-chain.'; $('#spRange').hidden = true; return; }
     const ch = (pts[pts.length - 1][1] / pts[0][1] - 1) * 100, ys = pts.map(q => q[1]), lo = Math.min(...ys), hi = Math.max(...ys), last = ys[ys.length - 1];
-    note.textContent = `${tf} change ${pct(ch)} · prices from GeckoTerminal`;
+    note.textContent = tf === '24h' ? 'Chart: 15-minute closes from GeckoTerminal' : `7d change ${pct(ch)} · 4-hour closes from GeckoTerminal`;
     $('#srLbl').textContent = tf + ' range'; $('#srLo').textContent = usd(lo); $('#srHi').textContent = usd(hi);
     $('#srDot').style.left = (hi > lo ? (last - lo) / (hi - lo) * 100 : 50).toFixed(1) + '%'; $('#spRange').hidden = false;
     if (RM) { wipe = 1; draw(); return; }

@@ -19,28 +19,28 @@
 <link rel="preload" href="/assets/fonts/idisp-black.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="modulepreload" href="/assets/js/vendor-motion.js?v=1">
-<link rel="stylesheet" href="/assets/css/app.css?v=1">
+<link rel="stylesheet" href="/assets/css/app.css?v=4">
 </head>
 <body class="booting">
-<div id="intro" aria-hidden="true"><i class="crt"></i></div>
+<div id="intro" aria-hidden="true"><canvas id="introCv"></canvas><button class="skip mono" id="skipIntro" type="button">skip</button></div>
 
 <header id="nav">
   <a class="brand" href="/" data-link aria-label="MILK home">
-    <svg class="drop" viewBox="0 0 16 19" aria-hidden="true"><path fill="currentColor" d="M7 0H9V1H10V3H11V5H12V6H13V8H14V10H15V15H14V17H13V18H11V19H5V18H3V17H2V15H1V10H2V8H3V6H4V5H5V3H6V1H7Z"/><path fill="#cfe0ff" d="M4 9H6V11H5V12H4Z"/></svg>
+    <svg class="drop" viewBox="0 0 16 19" aria-hidden="true"><use href="#dropShape"/></svg>
     <span>milk</span>
   </a>
   <nav class="links" aria-label="Sections">
-    <a href="/#how" data-sec>How</a><a href="/#stocks" data-sec>Stocks</a><a href="/#map" data-sec>Market</a><a href="/#split" data-sec>Split</a><a href="/#live" data-sec>Live</a><a href="/#bag" data-sec>Bag</a>
-    <i class="ink" aria-hidden="true"></i>
+    <a href="/#how" data-sec>How it works</a><a href="/#stocks" data-sec>Stocks</a><a href="/#split" data-sec>Split</a><a href="/#live" data-sec>Live</a><a href="/#milk" data-sec>$MILK</a><a href="/#faq" data-sec>FAQ</a>
   </nav>
   <div class="nav-r">
-    <button class="btn btn-sm btn-line" id="walletBtn" type="button" hidden></button>
+    <a class="nbtn nx" id="navX" href="#" target="_blank" rel="noopener" aria-label="MILK on X" hidden><svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
+    <button class="nbtn" id="walletBtn" type="button">Connect</button>
     <a class="btn btn-sm btn-white mag" href="/launch" data-link>Launch a coin</a>
   </div>
 </header>
 
 <main id="home">
-  <!-- 00 hero -->
+  <!-- hero -->
   <section id="hero" class="hero">
     <canvas id="pc" aria-label="A beige computer whose screen launches a coin and pays its holders in stocks"></canvas>
     <div class="orbit" id="orbit" aria-hidden="true"></div>
@@ -58,47 +58,43 @@
         <li><b class="ck">✓</b>Nothing to claim</li>
       </ul>
     </div>
-    <div class="hero-dim" id="heroDim"></div>
     <div class="tape" id="tape" aria-label="Live stock prices"><div class="tape-track"></div></div>
   </section>
 
-  <!-- 01 how it works -->
-  <section id="how" class="sheet sec-navy">
-    <div class="wrap"><header class="sec-head"><span class="eyebrow">01 · How it works</span><h2 class="h2 split">How a coin gets milked.</h2></header></div>
-    <div class="story" id="story">
-      <div class="wrap story-in">
-        <div class="story-l">
-          <ol class="steps-bar" aria-hidden="true"><li><i></i></li><li><i></i></li><li><i></i></li><li><i></i></li></ol>
-          <div class="steps">
-            <article class="step on"><span class="num">01</span><h3>Launch a coin</h3><p>Name, picture, the stock it pays. One signature.</p></article>
-            <article class="step"><span class="num">02</span><h3>Trades pay fees</h3><p>10% to you. 90% to the MILK engine.</p></article>
-            <article class="step"><span class="num">03</span><h3>Fees buy the stock</h3><p>Swapped on Jupiter. Real tokenized shares.</p></article>
-            <article class="step"><span class="num">04</span><h3>Holders get paid</h3><p>Pro rata, straight to wallets. Nothing to claim.</p></article>
-          </div>
-        </div>
-        <div class="story-r">
-          <div class="phone" id="phone">
-            <div class="ph-scr">
-              <div class="ph-island"></div>
-              <div class="ph-sb"><span>9:41</span><span class="ph-bat"><b></b><b></b><b></b><b></b><i></i></span></div>
-              <div class="ph-top"><img src="/assets/img/pfp.webp" alt="" width="30" height="30"><b>MILK</b><span class="ph-chip" id="phChip">New coin</span></div>
-              <div class="ph-stage">
-                <div class="ps ps1">
-                  <div class="ph-coin"><div class="ph-av"><svg viewBox="0 0 16 19"><use href="#dropShape"/></svg></div><div><div class="ph-name"><span id="phName"></span><i class="ph-caret"></i></div><div class="ph-tk mono" id="phTk">$</div></div></div>
-                  <div class="ph-card"><div class="ph-lbl">PAYS ITS HOLDERS IN</div><div class="ph-chips"><span class="tk on">NVDA</span><span class="tk">TSLA</span><span class="tk">SPACEX</span><span class="tk">AAPL</span></div></div>
-                  <div class="ph-card ph-split"><div class="ph-lbl">FEE SPLIT</div><div class="ph-bar"><i style="width:10%"></i><i style="width:90%"></i></div><div class="ph-legend"><span>You 10%</span><span>Engine 90%</span></div></div>
-                  <button class="ph-btn" type="button" tabindex="-1"><span class="a">Launch on pump.fun</span><span class="b">Live on pump.fun ✓</span></button>
-                </div>
-                <div class="ps ps2">
-                  <div class="ph-card ph-ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" class="trk"/><circle cx="40" cy="40" r="32" class="val" id="phRing"/></svg><div class="ph-rd"><svg viewBox="0 0 16 19"><use href="#dropShape"/></svg></div><div><div class="h">Next payout</div><div class="m">fills with every trade</div></div></div>
-                  <div class="ph-card ph-trades" id="phTrades"></div>
-                </div>
-                <div class="ps ps3">
-                  <div class="ph-card ph-swap"><div class="ph-lbl">THE POT, ON JUPITER</div><div class="sw"><span class="sw-a">SOL</span><span class="sw-line"><i></i></span><span class="sw-b">NVDA</span></div><div class="ph-prog"><i id="phProg"></i></div><div class="ph-ok" id="phBought">Bought ✓</div></div>
-                  <div class="ph-card"><div class="ph-lbl">HELD FOR HOLDERS</div><div class="ph-stack" id="phStack"></div></div>
-                </div>
-                <div class="ps ps4"><div class="ph-card ph-pay" id="phPay"></div><div class="ph-note">Straight to wallets.</div></div>
+  <!-- 01 how it works: four steps, the phone plays them -->
+  <section id="how" class="sec sec-navy">
+    <div class="wrap how-in">
+      <div class="how-l">
+        <header class="sec-head"><span class="eyebrow">01 · How it works</span><h2 class="h2 split">How a coin gets milked.</h2></header>
+        <ol class="hsteps" id="hsteps">
+          <li class="on"><button type="button" data-i="0"><span class="n">1</span><span><b>Launch a coin</b><em>Name, picture, the stock it pays.</em></span><i class="bar"><i></i></i></button></li>
+          <li><button type="button" data-i="1"><span class="n">2</span><span><b>Trades pay fees</b><em>10% to you, 90% to the engine.</em></span><i class="bar"><i></i></i></button></li>
+          <li><button type="button" data-i="2"><span class="n">3</span><span><b>Fees buy the stock</b><em>Swapped on Jupiter, for real.</em></span><i class="bar"><i></i></i></button></li>
+          <li><button type="button" data-i="3"><span class="n">4</span><span><b>Holders get paid</b><em>Pro rata. Nothing to claim.</em></span><i class="bar"><i></i></i></button></li>
+        </ol>
+      </div>
+      <div class="how-r">
+        <div class="phone" id="phone">
+          <div class="ph-scr">
+            <div class="ph-island"></div>
+            <div class="ph-sb"><span>9:41</span><span class="ph-bat"><b></b><b></b><b></b><b></b><i></i></span></div>
+            <div class="ph-top"><span class="ph-logo"><svg viewBox="0 0 16 19"><use href="#dropShape"/></svg></span><b>MILK</b><span class="ph-chip" id="phChip">New coin</span></div>
+            <div class="ph-stage">
+              <div class="ps ps1">
+                <div class="ph-coin"><div class="ph-av"><svg viewBox="0 0 16 19"><use href="#dropShape"/></svg></div><div><div class="ph-name"><span id="phName"></span><i class="ph-caret"></i></div><div class="ph-tk mono" id="phTk">$</div></div></div>
+                <div class="ph-card"><div class="ph-lbl">PAYS ITS HOLDERS IN</div><div class="ph-chips" id="phChips"><span class="tk on">NVDA</span><span class="tk">TSLA</span><span class="tk">SPACEX</span><span class="tk">AAPL</span></div></div>
+                <div class="ph-card ph-split"><div class="ph-lbl">FEE SPLIT</div><div class="ph-bar"><i style="width:10%"></i><i style="width:90%"></i></div><div class="ph-legend"><span>You 10%</span><span>Engine 90%</span></div></div>
+                <button class="ph-btn" type="button" tabindex="-1"><span class="a">Launch on pump.fun</span><span class="b">Live on pump.fun ✓</span></button>
               </div>
+              <div class="ps ps2">
+                <div class="ph-card ph-ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" class="trk"/><circle cx="40" cy="40" r="32" class="val" id="phRing"/></svg><div class="ph-rd"><svg viewBox="0 0 16 19"><use href="#dropShape"/></svg></div><div><div class="h">Next payout</div><div class="m">fills with every trade</div></div></div>
+                <div class="ph-card ph-trades" id="phTrades"></div>
+              </div>
+              <div class="ps ps3">
+                <div class="ph-card ph-swap"><div class="ph-lbl">THE POT, ON JUPITER</div><div class="sw"><span class="sw-a">SOL</span><span class="sw-line"><i></i></span><span class="sw-b" id="phBuyTk">NVDA</span></div><div class="ph-prog"><i id="phProg"></i></div><div class="ph-ok" id="phBought">Bought ✓</div></div>
+                <div class="ph-card"><div class="ph-lbl">HELD FOR HOLDERS</div><div class="ph-stack" id="phStack"></div></div>
+              </div>
+              <div class="ps ps4"><div class="ph-card ph-pay" id="phPay"></div><div class="ph-note">Straight to wallets.</div></div>
             </div>
           </div>
         </div>
@@ -106,114 +102,93 @@
     </div>
   </section>
 
-  <!-- 02 the shelf -->
-  <section id="stocks" class="shelf">
-    <div class="band" aria-hidden="true"><div class="band-track" id="band1"></div></div>
-    <div class="wrap shelf-head">
-      <header class="sec-head"><span class="eyebrow">02 · Pick what it pays</span><h2 class="h2 split">Real stocks. Pre-IPO. Live.</h2></header>
-      <div class="shelf-tools">
-        <div class="chips" id="shelfChips" role="tablist"><button class="chip on" data-k="top" type="button">Most traded</button><button class="chip" data-k="preipo" type="button">Pre-IPO</button><button class="chip" data-k="tech" type="button">Tech</button><button class="chip" data-k="crypto" type="button">Crypto</button><button class="chip" data-k="etf" type="button">Funds &amp; gold</button></div>
-        <button class="btn btn-sm btn-line-w" id="browseAll" type="button">All <span id="nAll">137</span></button>
-      </div>
-    </div>
-    <div class="rail-wrap" id="railWrap"><div class="rail" id="rail"></div></div>
-  </section>
-
-  <!-- 03 the market map -->
-  <section id="map" class="mapsec">
+  <!-- 02 stocks: cards or the market map -->
+  <section id="stocks" class="sec sec-ink">
     <div class="wrap">
-      <header class="sec-head sec-row"><div><span class="eyebrow">03 · The market, live</span><h2 class="h2 split">Everything a coin can pay.</h2></div>
-        <div class="chips chips-b" id="mapChips"><button class="chip on" data-k="all" type="button">All</button><button class="chip" data-k="preipo" type="button">Pre-IPO</button><button class="chip" data-k="tech" type="button">Tech</button><button class="chip" data-k="crypto" type="button">Crypto</button><button class="chip" data-k="etf" type="button">Funds</button></div>
+      <header class="sec-head sec-row"><div><span class="eyebrow">02 · What it pays</span><h2 class="h2 split">Real stocks. Pre-IPO. Live.</h2></div>
+        <div class="seg" id="viewSeg" role="tablist"><button class="on" data-v="cards" type="button">Cards</button><button data-v="map" type="button">Map</button></div>
       </header>
-      <div class="mapbox" id="mapBox"></div>
-      <div class="movers"><div class="mv"><span class="mv-t">Up most, 24h</span><div class="mv-l" id="mvUp"></div></div><div class="mv"><span class="mv-t">Down most, 24h</span><div class="mv-l" id="mvDn"></div></div></div>
+      <div class="stools">
+        <div class="chips" id="stockChips" role="tablist"><button class="chip on" data-k="top" type="button">Most traded</button><button class="chip" data-k="preipo" type="button">Pre-IPO</button><button class="chip" data-k="tech" type="button">Tech</button><button class="chip" data-k="crypto" type="button">Crypto</button><button class="chip" data-k="etf" type="button">Funds &amp; gold</button><button class="chip" data-k="up" type="button">Up today</button><button class="chip" data-k="down" type="button">Down today</button></div>
+        <label class="sfind"><input id="stockQ" class="mono" placeholder="Search" autocomplete="off" spellcheck="false"></label>
+      </div>
+      <div class="sgrid2" id="sgrid2"></div>
+      <div class="mapbox" id="mapBox" hidden></div>
+      <div class="smore"><button class="btn btn-line-w" id="moreStocks" type="button">Show all <span id="nAll">137</span></button></div>
     </div>
   </section>
 
-  <!-- 04 the split -->
-  <section id="split" class="split-sec sec-navy">
-    <div class="wrap split-in">
-      <div class="split-l">
-        <header class="sec-head"><span class="eyebrow">04 · The split</span><h2 class="h2 split">Every fee has a job.</h2></header>
-        <div class="lock rv"><span class="lk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4" y="10" width="16" height="11" rx="3" fill="currentColor"/></svg></span><div><b>Locked at launch</b><span>admin revoked in the same transaction</span></div></div>
-      </div>
-      <div class="split-r">
-        <div class="donut" id="donut"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="d-trk" cx="100" cy="100" r="80"/><g id="dSegs"></g></svg><div class="d-mid"><b id="dPct">100%</b><span id="dLbl">of every creator fee</span></div></div>
-        <ul class="legend" id="legend">
-          <li data-c="#ffffff"><i></i><b data-n="70">0</b><span><em>Holders</em>in the coin's stock</span></li>
-          <li data-c="#ffd23f"><i></i><b data-n="15">0</b><span><em>$MILK</em>bought and burned</span></li>
-          <li data-c="#8fc8ff"><i></i><b data-n="10">0</b><span><em>Creator</em>in SOL</span></li>
-          <li data-c="#2357ff"><i></i><b data-n="5">0</b><span><em>Engine</em>gas and accounts</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 calculator -->
-  <section id="calc" class="calc">
-    <div class="wrap calc-in">
-      <header class="sec-head"><span class="eyebrow">05 · Do the math</span><h2 class="h2 split">What would you get?</h2><p class="body rv">pump.fun's real fee rate, live share prices.</p></header>
-      <div class="calc-card rv" id="calcCard">
-        <div class="cc-row"><label for="cVol">Daily volume</label><output id="oVol">$100K</output><input type="range" id="cVol" min="0" max="100" value="50"></div>
-        <div class="cc-row"><label for="cPct">You hold</label><output id="oPct">1%</output><input type="range" id="cPct" min="0" max="100" value="50"></div>
-        <div class="cc-row cc-pick"><label>It pays</label><div class="cc-chips" id="cStock"></div></div>
-        <div class="cc-out">
-          <div class="cc-big"><span>You'd get about</span><b id="oDay">—</b><em id="oShares">—</em></div>
-          <div class="cc-mini"><div><span>a week</span><b id="oWeek">—</b></div><div><span>a month</span><b id="oMonth">—</b></div><div><span>all holders / day</span><b id="oAll">—</b></div></div>
-          <p class="cc-note mono" id="oNote">—</p>
+  <!-- 03 the split + the math -->
+  <section id="split" class="sec sec-blue">
+    <div class="wrap">
+      <header class="sec-head"><span class="eyebrow">03 · The split</span><h2 class="h2 split">Every fee has a job.</h2></header>
+      <div class="sm-in">
+        <div class="sm-l">
+          <div class="donut" id="donut"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="d-trk" cx="100" cy="100" r="80"/><g id="dSegs"></g></svg><div class="d-mid"><b id="dPct">100%</b><span id="dLbl">of every creator fee</span></div></div>
+          <ul class="legend" id="legend">
+            <li data-c="#ffffff"><i></i><b data-n="70">0</b><span><em>Holders</em>in the coin's stock</span></li>
+            <li data-c="#ffd23f"><i></i><b data-n="15">0</b><span><em>$MILK</em>bought and burned</span></li>
+            <li data-c="#8fc8ff"><i></i><b data-n="10">0</b><span><em>Creator</em>in SOL</span></li>
+            <li data-c="#0b1b66"><i></i><b data-n="5">0</b><span><em>Engine</em>gas and accounts</span></li>
+          </ul>
+          <div class="lock"><span class="lk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4" y="10" width="16" height="11" rx="3" fill="currentColor"/></svg></span><div><b>Locked at launch</b><span>admin revoked in the same transaction</span></div></div>
+        </div>
+        <div class="calc-card" id="calcCard">
+          <div class="cc-t">What would you get?</div>
+          <div class="cc-row"><label for="cVol">Daily volume</label><output id="oVol">$100K</output><input type="range" id="cVol" min="0" max="100" value="50"></div>
+          <div class="cc-row"><label for="cPct">You hold</label><output id="oPct">1%</output><input type="range" id="cPct" min="0" max="100" value="50"></div>
+          <div class="cc-row cc-pick"><label>It pays</label><div class="cc-chips" id="cStock"></div></div>
+          <div class="cc-out">
+            <div class="cc-big"><span>You'd get about</span><b id="oDay">—</b><em id="oShares">—</em></div>
+            <div class="cc-mini"><div><span>a week</span><b id="oWeek">—</b></div><div><span>a month</span><b id="oMonth">—</b></div><div><span>all holders / day</span><b id="oAll">—</b></div></div>
+            <p class="cc-note mono" id="oNote">—</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 06 live: coins, payouts, engine -->
-  <section id="live" class="live">
-    <div class="band" aria-hidden="true"><div class="band-track" id="band2"></div></div>
+  <!-- 04 live: coins, payouts, engine, your bag -->
+  <section id="live" class="sec sec-ink">
     <div class="wrap">
-      <header class="sec-head sec-row"><div><span class="eyebrow">06 · Live</span><h2 class="h2 split">The herd, live.</h2></div>
-        <div class="chips" id="liveTabs" role="tablist"><button class="chip on" data-t="coins" type="button">Coins</button><button class="chip" data-t="payouts" type="button">Payouts</button><button class="chip" data-t="engine" type="button">Engine</button></div>
+      <header class="sec-head sec-row"><div><span class="eyebrow">04 · Live</span><h2 class="h2 split">The herd, live.</h2></div>
+        <div class="seg" id="liveTabs" role="tablist"><button class="on" data-t="coins" type="button">Coins</button><button data-t="payouts" type="button">Payouts</button><button data-t="engine" type="button">Engine</button><button data-t="bag" type="button">Your bag</button></div>
       </header>
       <div class="stats" id="stats"><div><b id="sCoins">—</b><span>coins</span></div><div><b id="sClaimed">—</b><span>SOL in fees</span></div><div><b id="sBought">—</b><span>SOL of stock bought</span></div><div><b id="sHolders">—</b><span>holders paid</span></div></div>
       <div class="lpane" id="lpCoins"><div class="cgrid" id="cgrid"></div></div>
       <div class="lpane" id="lpPayouts" hidden><div class="ltable" id="ltable"></div></div>
       <div class="lpane" id="lpEngine" hidden><div class="engine" id="engBox"></div></div>
+      <div class="lpane" id="lpBag" hidden>
+        <form class="bagform" id="bagForm" autocomplete="off"><input id="bagIn" class="bagin mono" placeholder="Paste any Solana wallet" spellcheck="false"><button class="btn btn-white btn-lg" type="submit">Check <i class="arr">→</i></button><button class="btn btn-ghost btn-lg" id="bagMine" type="button" hidden>My wallet</button></form>
+        <div class="bagout" id="bagOut"></div>
+      </div>
     </div>
   </section>
 
-  <!-- 07 your bag -->
-  <section id="bag" class="bagsec sec-navy">
-    <div class="wrap bag-in">
-      <header class="sec-head"><span class="eyebrow">07 · Your bag</span><h2 class="h2 split">Check any wallet.</h2></header>
-      <form class="bagform rv" id="bagForm" autocomplete="off"><input id="bagIn" class="bagin mono" placeholder="Paste a Solana wallet address" spellcheck="false"><button class="btn btn-white btn-lg" type="submit">Check <i class="arr">→</i></button><button class="btn btn-ghost btn-lg" id="bagMine" type="button" hidden>My wallet</button></form>
-      <div class="bagout" id="bagOut"></div>
-    </div>
-  </section>
-
-  <!-- 08 $MILK -->
+  <!-- 05 $MILK -->
   <section id="milk" class="milkband">
     <div class="wrap milk-in">
       <div class="milk-l">
-        <span class="eyebrow">08 · $MILK</span>
+        <span class="eyebrow">05 · $MILK</span>
         <h2 class="h2 split">Every launch feeds $MILK.</h2>
-        <p class="body rv">15% of every coin's fees buys $MILK and burns it.</p>
-        <div class="ca rv" id="ca" hidden><span class="mono" id="caTxt"></span><button class="btn btn-sm btn-ink" id="caCopy" type="button">Copy</button></div>
-        <div class="mstats rv"><div><b id="mAside">—</b><span>SOL for $MILK</span></div><div><b id="mBurn">—</b><span>$MILK burned</span></div></div>
+        <p class="body">15% of every coin's fees buys $MILK and burns it.</p>
+        <div class="ca" id="ca" hidden><span class="mono" id="caTxt"></span><button class="btn btn-sm btn-ink" id="caCopy" type="button">Copy</button></div>
+        <div class="mstats"><div><b id="mAside">—</b><span>SOL for $MILK</span></div><div><b id="mBurn">—</b><span>$MILK burned</span></div></div>
       </div>
-      <div class="milk-r" aria-hidden="true"><canvas id="dripCv" width="600" height="700"></canvas></div>
+      <div class="milk-r" aria-hidden="true"><canvas id="dripCv" width="600" height="560"></canvas></div>
     </div>
   </section>
 
-  <!-- 09 FAQ -->
-  <section id="faq" class="faq">
-    <div class="wrap faq-in"><header class="sec-head"><span class="eyebrow">09 · FAQ</span><h2 class="h2 split">Questions.</h2></header><div class="qa" id="qa"></div></div>
+  <!-- 06 FAQ -->
+  <section id="faq" class="sec sec-navy">
+    <div class="wrap faq-in"><header class="sec-head"><span class="eyebrow">06 · FAQ</span><h2 class="h2 split">Questions.</h2></header><div class="qa" id="qa"></div></div>
   </section>
 
-  <!-- 10 end -->
+  <!-- end -->
   <section id="end" class="end">
-    <div class="pcs" aria-hidden="true"><div class="pcs-track" id="pcsTrack"></div></div>
     <div class="wrap end-in">
       <h2 class="mega" aria-label="milk"><span>m</span><span>i</span><span>l</span><span>k</span></h2>
-      <div class="ctas"><a class="btn btn-white btn-lg mag" href="/launch" data-link>Launch a coin <i class="arr">→</i></a><a class="btn btn-ghost btn-lg" id="xLink" href="#" target="_blank" rel="noopener" hidden>X</a></div>
+      <div class="ctas"><a class="btn btn-white btn-lg mag" href="/launch" data-link>Launch a coin <i class="arr">→</i></a><a class="btn btn-ghost btn-lg" href="/#stocks" data-sec>Browse stocks</a></div>
     </div>
   </section>
 </main>
@@ -236,6 +211,6 @@
 <div class="modal" id="modal" aria-hidden="true"><div class="md-bg" data-close></div><div class="md-panel" role="dialog" aria-modal="true"><button class="md-x" type="button" data-close aria-label="Close">×</button><div class="md-body" id="mdBody"></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="dropShape" fill="currentColor" d="M7 0H9V1H10V3H11V5H12V6H13V8H14V10H15V15H14V17H13V18H11V19H5V18H3V17H2V15H1V10H2V8H3V6H4V5H5V3H6V1H7Z"/></defs></svg>
-<script type="module" src="/assets/js/main.js?v=1"></script>
+<script type="module" src="/assets/js/main.js?v=4"></script>
 </body>
 </html>

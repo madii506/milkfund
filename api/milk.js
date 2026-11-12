@@ -38,11 +38,15 @@ async function coinsLive() {
     return { usd, coins: rows.map(r => ({ ...pub(r), curve: cv[r.coin] || null })) };
   });
 }
-// pump.fun's creator fee right now, read from its global account (the calculator uses it)
+// pump.fun's creator fee for a new coin right now: the pump-fees schedule (market-cap tiers), read from the chain
 async function creatorFeeBps() {
   return L.cached('cfee', 600e3, async () => {
-    const SDK = require('@pump-fun/pump-sdk'); const a = await S.account(SDK.GLOBAL_PDA.toBase58());
-    if (!a) return null; const g = SDK.PUMP_SDK.decodeGlobal(X.ai(a)); return Number(g.creatorFeeBasisPoints.toString());
+    const SDK = require('@pump-fun/pump-sdk');
+    const [g, fc] = await S.accounts([SDK.GLOBAL_PDA.toBase58(), SDK.PUMP_FEE_CONFIG_PDA.toBase58()]);
+    if (!g) return null;
+    const global = SDK.PUMP_SDK.decodeGlobal(X.ai(g)), feeConfig = fc ? SDK.PUMP_SDK.decodeFeeConfig(X.ai(fc)) : null;
+    const r = SDK.computeFeesBps({ global, feeConfig, mintSupply: global.tokenTotalSupply, virtualQuoteReserves: global.initialVirtualSolReserves, virtualTokenReserves: global.initialVirtualTokenReserves });
+    return Number(r.creatorFeeBps.toString());
   });
 }
 const pub = r => {
